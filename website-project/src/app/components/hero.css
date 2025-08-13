@@ -1,0 +1,26 @@
+.pngseq-container {
+  height: 100vh;
+  width: 100vw;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.pngseq-bgvideo {
+  position: absolute;
+  top: 0;
+  left: 10;
+  width: 64%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.pngseq-frame {
+  max-width: 100%;
+  max-height: 100%;
+  position: relative;
+  z-index: 2;
+}
