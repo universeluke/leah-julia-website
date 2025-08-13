@@ -89,7 +89,7 @@ export default function BarePngSequence() {
           loop
           playsInline
         >
-          <source src="/videos/landscape-video.mp4" type="video/mp4" />
+          <source src="/videos/landscape-video-1440p.mp4" type="video/mp4" />
         </video>
 
         <img ref={imageRef} className="pngseq-frame" alt="Frame" />
