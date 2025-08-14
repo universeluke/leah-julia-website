@@ -77,20 +77,23 @@ export default function BarePngSequence() {
   }, []);
 
   return (
-    <div ref={containerRef} className="pngseq-container">
-      <div className="pngseq-stage">
-        <video
-          className="pngseq-bgvideo"
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-        >
-          <source src="/videos/landscape-video-1440p.mp4" type="video/mp4" />
-        </video>
-        <img ref={imageRef} className="pngseq-frame" alt="Frame" />
+    <>
+      <div className="white-box"></div>
+      <div ref={containerRef} className="pngseq-container">
+        <div className="pngseq-stage">
+          <video
+            className="pngseq-bgvideo"
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src="/videos/landscape-video-1440p.mp4" type="video/mp4" />
+          </video>
+          <img ref={imageRef} className="pngseq-frame" alt="Frame" />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
