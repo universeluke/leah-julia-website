@@ -55,10 +55,10 @@ export default function BarePngSequence() {
       }
 
       // calculate zoom effect
-      const betweenProgress = framePos - frameIndex;
-      const scale = 1 + betweenProgress * 0.01; // 0.01 = 1% zoom per frame
-      img.style.transform = `scale(${scale})`;
-      img.style.transformOrigin = "center center";
+      // const betweenProgress = framePos - frameIndex;
+      // const scale = 1 + betweenProgress * 0.01; // 0.01 = 1% zoom per frame
+      // img.style.transform = `scale(${scale})`;
+      // img.style.transformOrigin = "center center";
     };
 
     const trigger = ScrollTrigger.create({
