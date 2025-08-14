@@ -78,7 +78,7 @@ export default function BarePngSequence() {
 
   return (
     <>
-      <img className="white-box" src="/cardboard-texture.jpg"></img>
+      <div className="white-box"></div>
       <div ref={containerRef} className="pngseq-container">
         <div className="pngseq-stage">
           <video
