@@ -24,63 +24,61 @@ export default function BarePngSequence() {
     const video = videoRef.current;
     if (!container || !img) return;
 
-    // try to play the video
     if (video) {
       video.play().catch((e) => {
         console.log("Video autoplay failed:", e);
       });
     }
 
-    const loadImages = () => {
-      const images = [];
-
-      for (let i = 0; i <= 140; i++) {
-        const frameNumber = String(i).padStart(4, "0");
-        const src = `/videos/sequence/frame_${frameNumber}.png`;
-
-        const image = new Image();
-        image.src = src;
-        images.push(image);
-
-        console.log("Loading:", src);
-      }
-
-      imagesRef.current = images;
-
-      img.src = images[0].src;
-    };
-
-    loadImages();
+    // load images
+    // reduced frames to be used with zoom effect
+    const frameCount = 70;
+    const images = [];
+    for (let i = 0; i < frameCount; i++) {
+      const frameNumber = String(i).padStart(4, "0");
+      const src = `/videos/sequence_reduced/frame_${frameNumber}.png`;
+      const image = new Image();
+      image.src = src;
+      images.push(image);
+    }
+    imagesRef.current = images;
+    img.src = images[0].src;
 
     const updateFrame = (progress) => {
-      const frameIndex = Math.floor(progress * 140); // 0 to 140 (for 141 frames)
-      const image = imagesRef.current[frameIndex];
+      const totalFrames = imagesRef.current.length;
+      const framePos = progress * (totalFrames - 1); // fractional index
+      const frameIndex = Math.floor(framePos);
 
+      const image = imagesRef.current[frameIndex];
       if (image && img) {
         img.src = image.src;
-        console.log("Frame:", frameIndex + 1, "Progress:", progress);
       }
+
+      // calculate zoom effect
+      const betweenProgress = framePos - frameIndex;
+      const scale = 1 + betweenProgress * 0.01; // 0.01 = 1% zoom per frame
+      img.style.transform = `scale(${scale})`;
+      img.style.transformOrigin = "center center";
     };
 
-    ScrollTrigger.create({
+    const trigger = ScrollTrigger.create({
       trigger: container,
       start: "top top",
       end: "bottom top",
       pin: true,
       scrub: true,
-      onUpdate: (self) => {
-        updateFrame(self.progress);
-      },
+      onUpdate: (self) => updateFrame(self.progress),
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      trigger.kill();
+      ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 
   return (
-    <div>
-      <div ref={containerRef} className="pngseq-container">
+    <div ref={containerRef} className="pngseq-container">
+      <div className="pngseq-stage">
         <video
           className="pngseq-bgvideo"
           ref={videoRef}
@@ -91,7 +89,6 @@ export default function BarePngSequence() {
         >
           <source src="/videos/landscape-video-1440p.mp4" type="video/mp4" />
         </video>
-
         <img ref={imageRef} className="pngseq-frame" alt="Frame" />
       </div>
     </div>
