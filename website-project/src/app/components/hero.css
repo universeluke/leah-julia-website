@@ -4,10 +4,9 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  color: white;
-  background-color: white;
+
   z-index: 10;
-  opacity: 0.15;
+  opacity: 0.2;
 }
 
 .pngseq-container {

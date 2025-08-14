@@ -78,7 +78,7 @@ export default function BarePngSequence() {
 
   return (
     <>
-      <div className="white-box"></div>
+      <img className="white-box" src="/cardboard-texture.jpg"></img>
       <div ref={containerRef} className="pngseq-container">
         <div className="pngseq-stage">
           <video
@@ -89,7 +89,7 @@ export default function BarePngSequence() {
             loop
             playsInline
           >
-            <source src="/videos/landscape-video-1440p.mp4" type="video/mp4" />
+            <source src="/videos/landscape-video3-1440p.mp4" type="video/mp4" />
           </video>
           <img ref={imageRef} className="pngseq-frame" alt="Frame" />
         </div>
