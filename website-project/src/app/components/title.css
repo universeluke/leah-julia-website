@@ -1,0 +1,19 @@
+.title {
+  font-family: "CursiveFont", cursive;
+  font-size: 7rem;
+  color: #ffffff;
+  text-align: center;
+  position: fixed;
+  top: 40vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  text-shadow: 2px 7px 4px rgba(102, 77, 64, 0.1);
+  will-change: transform, opacity;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: clamp(3rem, 12vw, 6rem);
+  }
+}

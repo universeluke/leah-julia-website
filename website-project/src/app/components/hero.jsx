@@ -3,6 +3,9 @@
 import { useEffect, useRef } from "react";
 import "./hero.css";
 
+// some weird gsap importing issue
+// this is a workaround to avoid SSR issues
+// thanks chatgpt
 let gsap, ScrollTrigger;
 if (typeof window !== "undefined") {
   gsap = require("gsap/dist/gsap").gsap;
@@ -61,6 +64,7 @@ export default function BarePngSequence() {
       // img.style.transformOrigin = "center center";
     };
 
+    // create scroll trigger
     const trigger = ScrollTrigger.create({
       trigger: container,
       start: "top top",
@@ -79,6 +83,7 @@ export default function BarePngSequence() {
   return (
     <>
       <div className="white-box"></div>
+
       <div ref={containerRef} className="pngseq-container">
         <div className="pngseq-stage">
           <video
