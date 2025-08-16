@@ -16,7 +16,7 @@ export default function Header() {
         scrollTrigger: {
           trigger: document.documentElement,
           start: "top top",
-          end: "+=300",
+          end: "+=300", // adjust how long it lasts
           scrub: 0.4,
           invalidateOnRefresh: true,
           // need to hide title on leave and show on enter back
@@ -28,7 +28,7 @@ export default function Header() {
       tl.fromTo(
         titleRef.current,
         { autoAlpha: 1, scale: 1, y: 0 }, // autoAlpha = opacity + visibility
-        { autoAlpha: 0, scale: 1.3, y: 0, ease: "none" }
+        { autoAlpha: 0, scale: 1.3, y: 0, ease: "none" } // adjust size, opacity, and y movement
       );
     });
 
