@@ -1,15 +1,10 @@
 "use client";
 
-//
-// THIS NEEDS BREAKING UP INTO SEPARATE COMPONENTS
-//
-
 import React, { useEffect, useRef, useState } from "react";
 import "./hero.css";
 
 // some weird gsap importing issue
 // this is a workaround to avoid SSR issues
-// thanks chatgpt
 let gsap, ScrollTrigger;
 if (typeof window !== "undefined") {
   gsap = require("gsap/dist/gsap").gsap;
@@ -65,6 +60,8 @@ export default function BarePngSequence() {
   const videoRef = useRef(null);
   const imagesRef = useRef([]);
 
+  const cardRef = useRef(null);
+
   const [isLoading, setIsLoading] = useState(true);
   const [target, setTarget] = useState(0);
   const [display, setDisplay] = useState(0);
@@ -109,7 +106,8 @@ export default function BarePngSequence() {
     const container = containerRef.current;
     const img = imageRef.current;
     const video = videoRef.current;
-    if (!container || !img) return;
+    const card = cardRef.current;
+    if (!container || !img || !card) return;
 
     if (video) {
       video.play().catch((e) => {
@@ -118,12 +116,10 @@ export default function BarePngSequence() {
     }
 
     // load images
-    // reduced frames to be used with zoom effect
     const frameCount = 70;
     const images = [];
     let loaded = 0;
 
-    // count total assets
     const total = frameCount + (video ? 1 : 0);
     const updateProgress = () => {
       loaded++;
@@ -177,32 +173,43 @@ export default function BarePngSequence() {
       if (image && img) {
         img.src = image.src;
       }
-
-      // calculate zoom effect
-      // const betweenProgress = framePos - frameIndex;
-      // const scale = 1 + betweenProgress * 0.01; // 0.01 = 1% zoom per frame
-      // img.style.transform = `scale(${scale})`;
-      // img.style.transformOrigin = "center center";
     };
 
-    // create scroll trigger
-    const trigger = ScrollTrigger.create({
+    const st = ScrollTrigger.create({
       trigger: container,
       start: "top top",
       end: "bottom top",
       pin: true,
       scrub: true,
-      onUpdate: (self) => updateFrame(self.progress),
+      onUpdate: (self) => {
+        updateFrame(self.progress);
+
+        // last 20% of the pinned range
+
+        const p = Math.max(0, Math.min(1, (self.progress - 0.8) / 0.2));
+
+        const lerp = (a, b, t) => a + (b - a) * t;
+
+        gsap.set(card, {
+          borderRadius: lerp(0, 28, p),
+          scale: lerp(1, 0.94, p),
+
+          transformOrigin: "center center",
+          force3D: true,
+        });
+      },
+      // markers: true,
     });
 
-    // safety so it never hangs
     const safety = setTimeout(() => setTarget(100), 10000);
-    const onWindowLoad = () => setTarget(100);
+    const onWindowLoad = () => {
+      setTarget(100);
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    };
     window.addEventListener("load", onWindowLoad);
 
     return () => {
-      trigger.kill();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      st.kill();
       cleanupVideo();
       clearTimeout(safety);
       window.removeEventListener("load", onWindowLoad);
@@ -258,23 +265,38 @@ export default function BarePngSequence() {
         </div>
       )}
 
-      <div className="white-box"></div>
-
       <div ref={containerRef} className="pngseq-container">
-        <div className="pngseq-stage">
-          <video
-            className="pngseq-bgvideo"
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source src="/videos/landscape-video3-1440p.mp4" type="video/mp4" />
-          </video>
-          <img ref={imageRef} className="pngseq-frame" alt="Frame" />
+        <div ref={cardRef} className="pngseq-card">
+          <div className="pngseq-stage">
+            <video
+              className="pngseq-bgvideo"
+              ref={videoRef}
+              autoPlay
+              muted
+              loop
+              playsInline
+            >
+              <source
+                src="/videos/landscape-video3-1440p.mp4"
+                type="video/mp4"
+              />
+            </video>
+            <img ref={imageRef} className="pngseq-frame" alt="Frame" />
+          </div>
         </div>
       </div>
+
+      {/* dummy content */}
+      <section className="after-content">
+        <h2>dummy dummy dummy </h2>
+        <p>
+          dummy dummy dummydummy dummy dummydummy dummy dummydummy dummy
+          dummydummy dummy dummydummy dummy dummydummy dummy dummydummy dummy
+          dummydummy dummy dummydummy dummy dummydummy dummy dummydummy dummy
+          dummydummy dummy dummydummy dummy dummydummy dummy dummy dummy dummy
+          dummydummy dummy dummydummy dummy dummydummy dummy dumm
+        </p>
+      </section>
     </>
   );
 }

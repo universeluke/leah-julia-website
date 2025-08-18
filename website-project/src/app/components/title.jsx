@@ -31,7 +31,7 @@ export default function Header() {
       tl.fromTo(
         targets,
         { autoAlpha: 1, scale: 1, y: 0 },
-        { autoAlpha: 0, scale: 1.1, y: 0, ease: "none" }
+        { autoAlpha: 0, scale: 1.2, y: 0, ease: "none" } // edit scale depending on zom
       );
     });
 
